@@ -8,43 +8,42 @@
 #include "ev3api.h"
 #include "SonarSensor.h"
 
+#include <functional>
+#include <map>
 
 class BehaviorHolder{
-
-private:
-
-    LineTracer mLineTracer;
-    void init();
-    int calcDirection();
-    void mortorControll(ev3api::Motor& motor, int deg, int pwm);
-
-    auto initialize;
-    auto calibration;
-    auto taskNormal;
-    auto runOnOff;
-    auto startDashByBluetooth;
 
 public:
     BehaviorHolder(LineTracer lineTracer);
     ~BehaviorHolder();
 
-    auto findBehaviorById(short id);
+    enum BehaviorId{
+         ID_INITIALIZE,
+         ID_CALIBRATION,
+         ID_NORMAL_RUN,
+         ID_RUNONOFF,
+         ID_STARTDASH_BY_BLUETOOTH
+    };
 
-    // ID
-    static const short ID_INITIALIZE;
-    static const short ID_CALIBRATION;
-    static const short ID_TASKNORMAL;
-    static const short ID_RUNONOFF;
-    static const short ID_STARTDASH_BY_BLUETOOTH;
+    std::function<void(void)> findBehaviorById(BehaviorId id);
 
-}
+ private:
 
-BehaviorHolder::BehaviorHolder(/* args */)
-{
-}
+    LineTracer mLineTracer;
+    map<BehaviorId,std::function<void(void)>> behavior_map;
+    
+    void init();
+    int calcDirection();
+    void mortorControll(ev3api::Motor& motor, int deg, int pwm);
 
-BehaviorHolder::~BehaviorHolder()
-{
-}
+};
+
+// BehaviorHolder::BehaviorHolder(/* args */)
+// {
+// }
+
+// BehaviorHolder::~BehaviorHolder()
+// {
+// }
 
 #endif

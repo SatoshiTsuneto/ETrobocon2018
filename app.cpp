@@ -73,7 +73,7 @@ static void user_system_create() {
                                       gRightWheel
                                       gTailWheel);
     
-    gLeftCourseTracer = new LeftCourseTracer(mLineTracer);
+    gLeftCourseTracer = new LeftCourseTracer(gLineTracer);
 
     // 初期化完了通知
     ev3_led_set_color(LED_ORANGE);
@@ -137,9 +137,7 @@ void tracer_task(intptr_t exinf) {
 }
 
 
-// /**
-//  * BlueToothタスク
-//  */
+// /* Bluetooth */
 // void bt_task(intptr_t unused){
 // 	int btwheel=0;
 // 	FILE *bt = ev3_serial_open_file(EV3_SERIAL_BT);

@@ -1,5 +1,15 @@
 #include "LineTracer.h"
 
+#include "LineMonitor.h"
+#include "BalancingWalker.h"
+#include "PidController.h"
+#include "ev3api.h"
+#include "SonarSensor.h"
+#include "Starter.h"
+#include "Calibration.h"
+
+#include <functional>
+
 /**
  * コンストラクタ
  * @param lineMonitor     ライン判定
@@ -42,10 +52,12 @@ void LineTracer::mortorControll(ev3api::Motor& motor, int deg, int pwm) {
 	motor.setPWM(0);
 }
 
-// // FIXME 引数が入った状態でコールバックを実行できない
-// void LineTracer::execBehavior(auto callBack){
-//       callBack();
-// }
+void LineTracer::exec_behavior(std::function<void(void)> callBack){ callBack();}
 
+// getter setter
+void LineTracer::set_speed(short speed){ m_speed = speed;}
+short LineTracer::get_spped(){return m_speed;}
 
+void LineTracer::set_pid(float *pid){ m_pid = pid;}
+float* LineTracer::get_pid(){return m_pid;}
 

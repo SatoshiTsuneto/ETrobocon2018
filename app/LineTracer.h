@@ -9,7 +9,7 @@
 #include "Starter.h"
 #include "Calibration.h"
 
-
+#include <functional>
 
 // 走行体の基底クラス
 class LineTracer {
@@ -39,8 +39,18 @@ public:
 
     void mortorControll(ev3api::Motor& motor, int deg, int pwm);
 
-    // FIXME 引数が入った状態でコールバックを実行できない
-    // void execBehavior( callBack);
+    void exec_behavior(std::function<void(void)> callBack);
+
+    void set_speed(short spped);
+    short get_spped();
+
+    void set_pid(float pid[3]);
+    float* get_pid(); 
+
+private:
+
+    short m_speed;
+    float m_pid[3];
    
 };
 

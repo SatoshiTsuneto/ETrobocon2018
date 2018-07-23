@@ -1,6 +1,8 @@
 #ifndef EV3_APP_LINETRACER_H_
 #define EV3_APP_LINETRACER_H_
 
+#include "BehaviorHolder.h"
+
 #include "LineMonitor.h"
 #include "BalancingWalker.h"
 #include "PidController.h"
@@ -13,13 +15,13 @@
 class LeftCourseTracer {
 
 public:
-  
+
     LeftCourseTracer(LineTracer lineTracer);
 
 private:
 
     BehaviorHolder mBehaviorHolder;
-    LeftCourseTracer mLineTracer;
+	LineTracer mLineTracer;
     void run();
 	void mortorControll(ev3api::Motor& motor, int deg, int pwm);
 
