@@ -3,13 +3,13 @@
 
 #include "BehaviorHolder.h"
 
+#include "LineTracer.h"
 #include "LineMonitor.h"
 #include "BalancingWalker.h"
 #include "PidController.h"
 #include "ev3api.h"
 #include "SonarSensor.h"
 #include "Starter.h"
-#include "LineTracer.h"
 #include "Calibration.h"
 
 class LeftCourseTracer {
