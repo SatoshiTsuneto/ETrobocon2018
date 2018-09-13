@@ -10,14 +10,16 @@
 #include <functional>
 
 //コンストラクタ
-BehaviorHolder::BehaviorHolder(LineTracer lineTracer){
+BehaviorHolder::BehaviorHolder(LineTracer lineTracer) {
     mLineTracer = lineTracer;
     init();
 }
 
-std::function<void(void)> BehaviorHolder::findBehaviorById(BehaviorId id){
+BehaviorHolder::~BehaviorHolder() {}
+
+std::function<void(void)> BehaviorHolder::findBehaviorById(BehaviorId id) {
     std::function<void(void)> behavior = behavior_map[id];
-    return result;
+    return behavior;
 }
 
 /**
@@ -27,22 +29,23 @@ std::function<void(void)> BehaviorHolder::findBehaviorById(BehaviorId id){
  * @retval -30 ライン外にある場合(左旋回指示)
  */
 int BehaviorHolder::calcDirection() {
-	return mLineTracer.mPidController->calControlledVariable(mLineTracer.mLineMonitor->getDeviation());
+    return static_cast<int>(mLineTracer.mPidController->calControlledVariable(
+            mLineTracer.mLineMonitor->getDeviation()));
 }
 
 // ラムダ式の実装
-void BehaviorHolder::init(){
+void BehaviorHolder::init() {
 
-     // 走行体を初期状態にする
-    behavior_map[ID_INITIALIZE] = []{
-    	mLineTracer.mTailWheel.reset();
+    // 走行体を初期状態にする
+    behavior_map[ID_INITIALIZE] = [this] {
+        mLineTracer.mTailWheel.reset();
         mLineTracer.mTailWheel.setCount(0);
-        mortorControll(mLineTracer.mTailWheel,85,50); //テイル降ろす
+        mortorControll(mLineTracer.mTailWheel, 85, 50); //テイル降ろす
         mLineTracer.mCalibration->init();
     };
 
     // キャリブレーション
-    behavior_map[ID_CALIBRATION] = []{
+    behavior_map[ID_CALIBRATION] = [this] {
 
         // TODO : きったねえので要修正
         bool result = false;
@@ -52,8 +55,8 @@ void BehaviorHolder::init(){
         result = mLineTracer.mCalibration->calibrateWhite(mLineTracer.mStarter->isPushed());
         result = mLineTracer.mCalibration->calibrationColor(mLineTracer.mStarter->isPushed());
 
-        if (result){
-            while(mLineTracer.mStarter->isPushed());
+        if (result) {
+            while (mLineTracer.mStarter->isPushed());
         }
     };
 
@@ -69,16 +72,16 @@ void BehaviorHolder::init(){
 
 
     // 直線走行
-    behavior_map[ID_NORMAL_RUN] = [] {
-        
-        float pid[3] = mLineTracer.get_pid();
-        if (mLineTracer.mIsInitialized == false) {
+    behavior_map[ID_NORMAL_RUN] = [this] {
+
+        float *pid = mLineTracer.get_pid();
+        if (!mLineTracer.mIsInitialized) {
             mLineTracer.mBalancingWalker->init();
             mLineTracer.mIsInitialized = true;
         }
 
         // 走行体の向きを計算する
-        mLineTracer.mPidController->setPidFactor(pid[0],pid[1],pid[2]);
+        mLineTracer.mPidController->setPidFactor(pid[0], pid[1], pid[2]);
         int direction = calcDirection();
 
         mLineTracer.mBalancingWalker->setCommand(mLineTracer.get_spped(), direction);//速度
@@ -88,25 +91,27 @@ void BehaviorHolder::init(){
     };
 
 
-    // バランス崩す状態の走行 
-    behavior_map[ID_RUNONOFF] = []{
-        if (mLineTracer.mIsInitialized == false) {
+    // バランス崩す状態の走行
+    behavior_map[ID_RUNONOFF] = [this] {
+        if (!mLineTracer.mIsInitialized) {
             mLineTracer.mBalancingWalker->init();
             mLineTracer.mIsInitialized = true;
         }
 
-        bool isOnLine = mLineTracer.mLineMonitor ->isOnLine99();//ライン上判定（ジャイロセンサ）
+        bool isOnLine = mLineTracer.mLineMonitor->isOnLine99();//ライン上判定（ジャイロセンサ）
         //走行を行う
-        if(isOnLine == true){
+        if (isOnLine) {
             mLineTracer.mLeftWheel.setPWM(15);
             mLineTracer.mRightWheel.setPWM(5);
-        }
-        else{
+        } else {
             mLineTracer.mLeftWheel.setPWM(5);
             mLineTracer.mRightWheel.setPWM(15);
         }
     };
-
-
 }
+
+
+
+
+
 

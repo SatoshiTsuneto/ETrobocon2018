@@ -6,14 +6,17 @@
  *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
 
+#include <LineTracer.h>
+#include <LeftCourseTracer.h>
 #include "app.h"
-#include "LeftCourseTrace.h"
 #include "SonarSensor.h"
 
 #if defined(BUILD_MODULE)
 #include "module_cfg.h"
 #else
+
 #include "kernel_cfg.h"
+
 #endif
 
 // using宣言
@@ -27,20 +30,20 @@ using ev3api::Motor;
 // オブジェクトを静的に確保する
 SonarSensor gSonarSensor(PORT_2);
 ColorSensor gColorSensor(PORT_3);
-GyroSensor  gGyroSensor(PORT_4);
+GyroSensor gGyroSensor(PORT_4);
 TouchSensor gTouchSensor(PORT_1);
-Motor       gLeftWheel(PORT_C);
-Motor       gRightWheel(PORT_B);
-Motor       gTailWheel(PORT_A);
+Motor gLeftWheel(PORT_C);
+Motor gRightWheel(PORT_B);
+Motor gTailWheel(PORT_A);
 
 // オブジェクトの定義
-static LineMonitor     *gLineMonitor;
-static Balancer        *gBalancer;
+static LineMonitor *gLineMonitor;
+static Balancer *gBalancer;
 static BalancingWalker *gBalancingWalker;
-static LineTracer      *gLineTracer;
-static Starter         *gStarter;
-static Calibration     *gCalibration;
-static PidController   *gPidController;
+static LineTracer *gLineTracer;
+static Starter *gStarter;
+static Calibration *gCalibration;
+static PidController *gPidController;
 static LeftCourseTracer *gLeftCourseTracer;
 
 char gBt_data = 0;
@@ -49,31 +52,31 @@ char gBt_data = 0;
  * EV3システム生成
  */
 static void user_system_create() {
-	tslp_tsk(2);
+    tslp_tsk(2);
     // オブジェクトの作成
-    gBalancer        = new Balancer();
+    gBalancer = new Balancer();
     gBalancingWalker = new BalancingWalker(gGyroSensor,
                                            gLeftWheel,
                                            gRightWheel,
                                            gBalancer);
-    gLineMonitor     = new LineMonitor(gColorSensor);
-    gStarter         = new Starter(gTouchSensor);
-    gPidController   = new PidController();
-   
-    gCalibration     = new Calibration(gColorSensor, 
-                                       gGyroSensor, 
-                                       gLineMonitor);
+    gLineMonitor = new LineMonitor(gColorSensor);
+    gStarter = new Starter(gTouchSensor);
+    gPidController = new PidController();
 
-    gLineTracer      = new LineTracer(gLineMonitor, 
-                                      gStarter, 
-                                      gCalibration, 
-                                      gBalancingWalker, 
-                                      gPidController, 
-                                      gLeftWheel, 
-                                      gRightWheel
-                                      gTailWheel);
-    
-    gLeftCourseTracer = new LeftCourseTracer(gLineTracer);
+    gCalibration = new Calibration(gColorSensor,
+                                   gGyroSensor,
+                                   gLineMonitor);
+
+    gLineTracer = new LineTracer(gLineMonitor,
+                                 gStarter,
+                                 gCalibration,
+                                 gBalancingWalker,
+                                 gPidController,
+                                 gLeftWheel,
+                                 gRightWheel,
+                                 gTailWheel);
+
+    gLeftCourseTracer = new LeftCourseTracer(*gLineTracer);
 
     // 初期化完了通知
     ev3_led_set_color(LED_ORANGE);
@@ -87,7 +90,7 @@ static void user_system_destroy() {
     gRightWheel.reset();
     gTailWheel.reset();
 
-    delete gLeftCourseTrace;
+    delete gLeftCourseTracer;
     delete gLineTracer;
     delete gStarter;
     delete gLineMonitor;
@@ -131,7 +134,7 @@ void tracer_task(intptr_t exinf) {
     if (ev3_button_is_pressed(BACK_BUTTON)) {
         wup_tsk(MAIN_TASK);  // バックボタン押下,0
     } else {
-         gLeftCourseTrace->run();  // 倒立走行
+        gLeftCourseTracer->run();  // 倒立走行
     }
     ext_tsk();
 }

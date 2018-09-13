@@ -1,5 +1,5 @@
-#ifndef EV3_APP_LINETRACER_H_
-#define EV3_APP_LINETRACER_H_
+#ifndef EV3_APP_BEHAVIORHOLDER_H_
+#define EV3_APP_BEHAVIORHOLDER_H_
 
 #include "LineTracer.h"
 #include "LineMonitor.h"
@@ -11,30 +11,35 @@
 #include <functional>
 #include <map>
 
-class BehaviorHolder{
+class BehaviorHolder {
 
 public:
-    BehaviorHolder(LineTracer lineTracer);
+    explicit BehaviorHolder(LineTracer lineTracer);
+
+    BehaviorHolder();
+
     ~BehaviorHolder();
 
-    enum BehaviorId{
-         ID_INITIALIZE,
-         ID_CALIBRATION,
-         ID_NORMAL_RUN,
-         ID_RUNONOFF,
-         ID_STARTDASH_BY_BLUETOOTH
+    enum BehaviorId {
+        ID_INITIALIZE,
+        ID_CALIBRATION,
+        ID_NORMAL_RUN,
+        ID_RUNONOFF,
+        ID_STARTDASH_BY_BLUETOOTH
     };
 
     std::function<void(void)> findBehaviorById(BehaviorId id);
 
- private:
+private:
 
     LineTracer mLineTracer;
-    map<BehaviorId,std::function<void(void)>> behavior_map;
-    
+    std::map<BehaviorId, std::function<void(void)>> behavior_map;
+
     void init();
+
     int calcDirection();
-    void mortorControll(ev3api::Motor& motor, int deg, int pwm);
+
+    void mortorControll(ev3api::Motor &motor, int deg, int pwm);
 
 };
 
