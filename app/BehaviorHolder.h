@@ -38,9 +38,6 @@ private:
     void init();
 
     int calcDirection();
-
-    void mortorControll(ev3api::Motor &motor, int deg, int pwm);
-
 };
 
 // BehaviorHolder::BehaviorHolder(/* args */)

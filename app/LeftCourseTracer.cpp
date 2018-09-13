@@ -49,6 +49,8 @@ void LeftCourseTracer::run() {
             mLineTracer.set_pid(const_cast<float *>(PID_1));
             mLineTracer.set_speed(SPEED_MIDDLE);
             break;
+
+        default:break;
     }
     mLineTracer.exec_behavior(behavior);
 }

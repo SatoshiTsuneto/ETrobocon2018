@@ -15,7 +15,7 @@ BehaviorHolder::BehaviorHolder(LineTracer lineTracer) {
     init();
 }
 
-BehaviorHolder::~BehaviorHolder() {}
+BehaviorHolder::~BehaviorHolder() = default;
 
 std::function<void(void)> BehaviorHolder::findBehaviorById(BehaviorId id) {
     std::function<void(void)> behavior = behavior_map[id];
@@ -40,18 +40,18 @@ void BehaviorHolder::init() {
     behavior_map[ID_INITIALIZE] = [this] {
         mLineTracer.mTailWheel.reset();
         mLineTracer.mTailWheel.setCount(0);
-        mortorControll(mLineTracer.mTailWheel, 85, 50); //テイル降ろす
+        mLineTracer.mortorControll(mLineTracer.mTailWheel, 85, 50); //テイル降ろす
         mLineTracer.mCalibration->init();
     };
 
     // キャリブレーション
     behavior_map[ID_CALIBRATION] = [this] {
 
-        // TODO : きったねえので要修正
+        // TODO : 汚いまで
         bool result = false;
 
-        result = mLineTracer.mCalibration->calibrateGyro(1);
-        result = mLineTracer.mCalibration->calibrateBlack(1);
+        result = mLineTracer.mCalibration->calibrateGyro(true);
+        result = mLineTracer.mCalibration->calibrateBlack(true);
         result = mLineTracer.mCalibration->calibrateWhite(mLineTracer.mStarter->isPushed());
         result = mLineTracer.mCalibration->calibrationColor(mLineTracer.mStarter->isPushed());
 
