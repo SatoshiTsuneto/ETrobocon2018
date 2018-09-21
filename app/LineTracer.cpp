@@ -32,11 +32,11 @@ LineTracer::LineTracer(const LineMonitor *lineMonitor,
 /**
  * デストラクタ
  */
-LineTracer::~LineTracer() {}
+LineTracer::~LineTracer() = default;
 
 // 指定されたモーターにスピードと速さを指定する。
 // degは目的の角度。PWMはモータの速さで、正の値で正回転、負の値で逆回転。
-void LineTracer::mortorControll(ev3api::Motor &motor, int deg, int pwm) {
+void LineTracer::motor_control(ev3api::Motor &motor, int deg, int pwm) {
     motor.setPWM(pwm);
     if (deg > 0) {
         while (motor.getCount() < deg);

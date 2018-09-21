@@ -14,15 +14,12 @@
 class LeftCourseTracer {
 
 public:
-    explicit LeftCourseTracer(LineTracer lineTracer);
+    explicit LeftCourseTracer(LineTracer *lineTracer);
 
     void run();
 
     BehaviorHolder *mBehaviorHolder;
-    LineTracer mLineTracer;
-
-    void mortorControll(ev3api::Motor &motor, int deg, int pwm);
-
+    LineTracer *mLineTracer;
 };
 
 #endif

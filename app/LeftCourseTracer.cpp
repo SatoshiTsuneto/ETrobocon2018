@@ -21,11 +21,8 @@ const short SPEED_HIGH = 100;
 const short SPEED_MIDDLE = 55;
 const short SPEED_LOW = 30;
 
-LeftCourseTracer::LeftCourseTracer(LineTracer lineTracer) {
-    mLineTracer = lineTracer;
-    mBehaviorHolder = new BehaviorHolder(mLineTracer);
-}
-
+LeftCourseTracer::LeftCourseTracer(LineTracer *lineTracer) : mLineTracer(lineTracer),
+                                                             mBehaviorHolder(new BehaviorHolder(lineTracer)) {}
 
 // TODO :
 // 走行
@@ -37,7 +34,7 @@ void LeftCourseTracer::run() {
         // 第一直線
         case 0:
             behavior = mBehaviorHolder->findBehaviorById(BehaviorHolder::ID_INITIALIZE);
-            if (mLineTracer.mLeftWheel.getCount() > 2000) { status = 1; }
+            if (mLineTracer->mLeftWheel.getCount() > 2000) { status = 1; }
             break;
 
         case 1:
@@ -46,11 +43,15 @@ void LeftCourseTracer::run() {
 
         case 2:
             behavior = mBehaviorHolder->findBehaviorById(BehaviorHolder::ID_NORMAL_RUN);
-            mLineTracer.set_pid(const_cast<float *>(PID_1));
-            mLineTracer.set_speed(SPEED_MIDDLE);
+            mLineTracer->set_pid(const_cast<float *>(PID_1));
+            mLineTracer->set_speed(SPEED_MIDDLE);
             break;
 
-        default:break;
+        default:
+            break;
     }
-    mLineTracer.exec_behavior(behavior);
+    mLineTracer->exec_behavior(behavior);
 }
+
+
+

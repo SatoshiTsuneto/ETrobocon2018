@@ -14,11 +14,9 @@
 class BehaviorHolder {
 
 public:
-    explicit BehaviorHolder(LineTracer lineTracer);
+    explicit BehaviorHolder(LineTracer *lineTracer);
 
-    BehaviorHolder();
-
-    ~BehaviorHolder();
+    virtual ~BehaviorHolder();
 
     enum BehaviorId {
         ID_INITIALIZE,
@@ -32,7 +30,7 @@ public:
 
 private:
 
-    LineTracer mLineTracer;
+    LineTracer *mLineTracer;
     std::map<BehaviorId, std::function<void(void)>> behavior_map;
 
     void init();
@@ -40,12 +38,8 @@ private:
     int calcDirection();
 };
 
-// BehaviorHolder::BehaviorHolder(/* args */)
-// {
-// }
+// BehaviorHolder::BehaviorHolder( args ) {}
 
-// BehaviorHolder::~BehaviorHolder()
-// {
-// }
+// BehaviorHolder::~BehaviorHolder() { }
 
 #endif

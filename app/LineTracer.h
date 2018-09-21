@@ -34,11 +34,10 @@ public:
                ev3api::Motor &rightWheel,
                ev3api::Motor &tailWheel);
 
-    LineTracer();
 
     virtual ~LineTracer();
 
-    void mortorControll(ev3api::Motor &motor, int deg, int pwm);
+    void motor_control(ev3api::Motor &motor, int deg, int pwm);
 
     void exec_behavior(std::function<void(void)> callBack);
 

@@ -115,7 +115,7 @@ void main_task(intptr_t unused) {
 
     // 周期ハンドラ開始
     ev3_sta_cyc(EV3_CYC_TRACER);
-    act_tsk(BT_TASK);
+    // act_tsk(BT_TASK);
 
     slp_tsk();  // バックボタンが押されるまで待つ
 
