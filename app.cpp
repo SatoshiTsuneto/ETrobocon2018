@@ -6,10 +6,11 @@
  *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
 
-#include <LineTracer.h>
-#include <LeftCourseTracer.h>
+#include "ev3api.h"
 #include "app.h"
 #include "SonarSensor.h"
+#include "LineTracer.h"
+#include "LeftCourseTracer.h"
 
 #if defined(BUILD_MODULE)
 #include "module_cfg.h"
@@ -76,7 +77,7 @@ static void user_system_create() {
                                  gRightWheel,
                                  gTailWheel);
 
-    gLeftCourseTracer = new LeftCourseTracer(*gLineTracer);
+    gLeftCourseTracer = new LeftCourseTracer(gLineTracer);
 
     // 初期化完了通知
     ev3_led_set_color(LED_ORANGE);
@@ -140,17 +141,17 @@ void tracer_task(intptr_t exinf) {
 }
 
 
-// /* Bluetooth */
-// void bt_task(intptr_t unused){
-// 	int btwheel=0;
-// 	FILE *bt = ev3_serial_open_file(EV3_SERIAL_BT);
-//     while(1) {
-//         gBt_data = fgetc(bt); /* 受信 */
-// 		fprintf(bt, "%c\r",gBt_data);
-//     	if(gBt_data == '1'){
-//     		btwheel=gLeftWheel.getCount();
-//     		fprintf(bt, "%c  Lwheel=%d\r\n",gBt_data,btwheel);
-//     		tslp_tsk(100);
-//     	}
-//     }
-// }
+///* Bluetooth */
+//void bt_task(intptr_t unused) {
+//    int btwheel = 0;
+//    FILE *bt = ev3_serial_open_file(EV3_SERIAL_BT);
+//    while (1) {
+//        gBt_data = fgetc(bt); /* 受信 */
+//        fprintf(bt, "%c\r", gBt_data);
+//        if (gBt_data == '1') {
+//            btwheel = gLeftWheel.getCount();
+//            fprintf(bt, "%c  Lwheel=%d\r\n", gBt_data, btwheel);
+//            tslp_tsk(100);
+//        }
+//    }
+//}

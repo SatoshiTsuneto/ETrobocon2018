@@ -1,6 +1,7 @@
 #ifndef EV3_APP_LINETRACER_H_
 #define EV3_APP_LINETRACER_H_
 
+#include <functional>
 #include "LineMonitor.h"
 #include "BalancingWalker.h"
 #include "PidController.h"
@@ -8,7 +9,6 @@
 #include "SonarSensor.h"
 #include "Starter.h"
 #include "Calibration.h"
-#include <functional>
 
 #define PID_BUF 3
 

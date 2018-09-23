@@ -6,7 +6,6 @@
 #include "SonarSensor.h"
 #include "Starter.h"
 #include "Calibration.h"
-#include <functional>
 
 /**
  * コンストラクタ

@@ -7,17 +7,17 @@
  *****************************************************************************/
 
 #ifdef __cplusplus
+
+
 extern "C" {
 #endif
-
-#include "ev3api.h"
 
 /*
  *  Šeƒ^ƒXƒN‚Ì—Dæ“x‚Ì’è‹`
  */
 #define MAIN_PRIORITY    TMIN_APP_TPRI + 1  /* ƒƒCƒ“ƒ^ƒXƒN‚Ì—Dæ“x */
 #define TRACER_PRIORITY  TMIN_APP_TPRI + 2
-#define MOD_PRIORITY	 TMIN_APP_TPRI + 3 
+#define MOD_PRIORITY     TMIN_APP_TPRI + 3
 
 
 /*

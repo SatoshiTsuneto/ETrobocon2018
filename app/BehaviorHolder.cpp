@@ -6,9 +6,6 @@
 #include "ev3api.h"
 #include "SonarSensor.h"
 
-#include <map>
-#include <functional>
-
 //コンストラクタ
 BehaviorHolder::BehaviorHolder(LineTracer *lineTracer) : mLineTracer(lineTracer) {
     init();
@@ -68,7 +65,6 @@ void BehaviorHolder::init() {
     //         mLineTracer.mTailWheel.setPWM(-50);
     //     }
     // };
-
 
     // 直線走行
     behavior_map[ID_NORMAL_RUN] = [this] {

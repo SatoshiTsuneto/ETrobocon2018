@@ -1,7 +1,6 @@
 #include "LeftCourseTracer.h"
 #include "BehaviorHolder.h"
 #include "LineTracer.h"
-
 #include "LineMonitor.h"
 #include "BalancingWalker.h"
 #include "PidController.h"
@@ -9,8 +8,6 @@
 #include "SonarSensor.h"
 #include "Starter.h"
 #include "Calibration.h"
-
-#include <functional>
 
 using namespace std;
 
@@ -28,6 +25,7 @@ LeftCourseTracer::LeftCourseTracer(LineTracer *lineTracer) : mLineTracer(lineTra
 // 走行
 void LeftCourseTracer::run() {
     static int status = 0;
+
     std::function<void(void)> behavior;
     switch (status) {
         //走行を開始する
@@ -52,6 +50,3 @@ void LeftCourseTracer::run() {
     }
     mLineTracer->exec_behavior(behavior);
 }
-
-
-

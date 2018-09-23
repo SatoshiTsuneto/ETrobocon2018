@@ -14,12 +14,11 @@
 class LeftCourseTracer {
 
 public:
-    explicit LeftCourseTracer(LineTracer *lineTracer);
-
-    void run();
-
-    BehaviorHolder *mBehaviorHolder;
     LineTracer *mLineTracer;
+    BehaviorHolder *mBehaviorHolder;
+
+    explicit LeftCourseTracer(LineTracer *lineTracer);
+    void run();
 };
 
 #endif
